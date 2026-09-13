@@ -1,0 +1,38 @@
+# ==============================================================================
+# NETWATCH CONFIGURATION FILE
+# /etc/netwatch/netwatch.conf or config/netwatch.conf
+# ==============================================================================
+
+# Network Monitoring Thresholds (in Mbps)
+DOWNLOAD_THRESHOLD_MBPS=50
+UPLOAD_THRESHOLD_MBPS=20
+
+# Monitoring collection interval in seconds (default: 2s)
+MONITORING_INTERVAL_SECONDS=2
+
+# Web Dashboard API Port (default: 4000)
+PORT=4000
+HOST=0.0.0.0
+
+# Storage Locations
+DATA_DIR=data
+JSON_OUTPUT_FILE=data/traffic.json
+LOG_DIR=logs
+LOG_FILE=logs/netwatch.log
+
+# Log retention and rotation
+LOG_RETENTION_DAYS=7
+LOG_MAX_SIZE_MB=10
+LOG_LEVEL=INFO
+
+# Defensive File Integrity Monitoring (FIM)
+# Monitored directories must be explicitly set and authorized
+FIM_ENABLED=true
+FIM_DIRECTORIES=test_monitor_dir
+
+# Alert Configuration
+ALERTS_ENABLED=true
+ALERT_SPIKE_PERCENTAGE=150
+
+# Demo Mode (forces synthetic simulation if true, or auto-detects if nethogs/root unavailable)
+DEMO_MODE=false

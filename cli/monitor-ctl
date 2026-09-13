@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# NETWATCH — Unified CLI Dispatcher: monitor-ctl
+# Objective 1: Unified command dispatcher with defensive error handling.
+# ==============================================================================
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+ACTION="${1:-help}"
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+BOLD='\033[1m'
+NC='\033[0m'
+
+show_help() {
+    echo -e "${CYAN}${BOLD}"
+    echo "================================================================================"
+    echo "           NETWATCH — Network & System Activity CLI Dispatcher                  "
+    echo "================================================================================"
+    echo -e "${NC}"
+    echo -e "Usage: ${BOLD}monitor-ctl <command> [options]${NC}\n"
+    echo "Available Commands:"
+    echo -e "  ${GREEN}install${NC}       Verify environment, dependencies, directories, & install service"
+    echo -e "  ${GREEN}uninstall${NC}     Safely stop service, remove service file, and cleanup"
+    echo -e "  ${GREEN}start${NC}         Start the NETWATCH monitoring daemon and web API"
+    echo -e "  ${GREEN}stop${NC}          Stop the running monitoring daemon"
+    echo -e "  ${GREEN}restart${NC}       Restart the monitoring daemon"
+    echo -e "  ${GREEN}status${NC}        Display real-time telemetry, service state, and alert counts"
+    echo -e "  ${GREEN}monitor${NC}       Open live interactive terminal traffic monitor"
+    echo -e "  ${GREEN}doctor${NC}        Execute automated system diagnostics and health checks"
+    echo -e "  ${GREEN}config${NC}        Display or validate current threshold and engine configuration"
+    echo -e "  ${GREEN}logs${NC}          View recent log entries with live streaming (-f)"
+    echo -e "  ${GREEN}help${NC}          Show this help message"
+    echo ""
+}
+
+case "${ACTION}" in
+    install)
+        bash "${SCRIPT_DIR}/scripts/install.sh"
+        ;;
+    uninstall)
+        shift || true
+        bash "${SCRIPT_DIR}/scripts/uninstall.sh" "$@"
+        ;;
+    start)
+        bash "${SCRIPT_DIR}/scripts/service.sh" start
+        ;;
+    stop)
+        bash "${SCRIPT_DIR}/scripts/service.sh" stop
+        ;;
+    restart)
+        bash "${SCRIPT_DIR}/scripts/service.sh" restart
+        ;;
+    status)
+        # Check service status and summary
+        node "${SCRIPT_DIR}/cli/monitor-ctl.js" status
+        ;;
+    monitor)
+        bash "${SCRIPT_DIR}/scripts/monitor.sh" "${SCRIPT_DIR}/data/traffic.json"
+        ;;
+    doctor)
+        bash "${SCRIPT_DIR}/scripts/doctor.sh"
+        ;;
+    config)
+        node "${SCRIPT_DIR}/cli/monitor-ctl.js" config
+        ;;
+    logs)
+        shift || true
+        node "${SCRIPT_DIR}/cli/monitor-ctl.js" logs "$@"
+        ;;
+    help|--help|-h)
+        show_help
+        ;;
+    *)
+        echo -e "${RED}[ERROR] Unknown command: '${ACTION}'${NC}\n"
+        show_help
+        exit 1
+        ;;
+esac

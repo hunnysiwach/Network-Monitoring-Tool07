@@ -1,0 +1,11 @@
+node_modules/
+.env
+.DS_Store
+dist/
+build/
+logs/*.log.*
+logs/*.log
+data/traffic.json.tmp*
+data/traffic.json.bak
+coverage/
+.vite/

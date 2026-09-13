@@ -1,0 +1,19 @@
+{
+  "DOWNLOAD_THRESHOLD_MBPS": 50,
+  "UPLOAD_THRESHOLD_MBPS": 20,
+  "MONITORING_INTERVAL_SECONDS": 2,
+  "PORT": 4000,
+  "HOST": "0.0.0.0",
+  "DATA_DIR": "data",
+  "JSON_OUTPUT_FILE": "data/traffic.json",
+  "LOG_DIR": "logs",
+  "LOG_FILE": "logs/netwatch.log",
+  "LOG_RETENTION_DAYS": 7,
+  "LOG_MAX_SIZE_MB": 10,
+  "LOG_LEVEL": "INFO",
+  "FIM_ENABLED": true,
+  "FIM_DIRECTORIES": ["test_monitor_dir"],
+  "ALERTS_ENABLED": true,
+  "ALERT_SPIKE_PERCENTAGE": 150,
+  "DEMO_MODE": false
+}

@@ -1,0 +1,29 @@
+[Unit]
+Description=NETWATCH — Network Traffic Monitoring & System Activity Daemon
+Documentation=https://github.com/netwatch-security/netwatch
+After=network.target syslog.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/netwatch
+EnvironmentFile=-/etc/netwatch/netwatch.conf
+ExecStart=/usr/bin/node backend/server.js
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=5s
+
+# Defensive security sandboxing
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=read-only
+NoNewPrivileges=false
+CapabilityBoundingSet=CAP_NET_RAW CAP_NET_ADMIN CAP_DAC_READ_SEARCH
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=netwatch
+
+[Install]
+WantedBy=multi-user.target
